@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-03-17T16:41:50.550588+01:00 by Eclipse SUMO netedit 1.25.0
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <!-- Detectors -->
+    <inductionLoop id="loop_east_in_0" lane="east_in_0" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_east_in_1" lane="east_in_1" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_north_in_0" lane="north_in_0" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_north_in_1" lane="north_in_1" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_south_in_0" lane="south_in_0" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_south_in_1" lane="south_in_1" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_west_in_0" lane="west_in_0" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <inductionLoop id="loop_west_in_1" lane="west_in_1" pos="-10.00" period="1.00" file="output_loops.xml"/>
+    <laneAreaDetector id="queue_east" lane="east_in_0" pos="-150.00" length="145.00" period="1.00" file="output_queues.xml"/>
+    <laneAreaDetector id="queue_north" lane="north_in_0" pos="-150.00" length="145.00" period="1.00" file="output_queues.xml"/>
+    <laneAreaDetector id="queue_south" lane="south_in_0" pos="-150.00" length="145.00" period="1.00" file="output_queues.xml"/>
+    <laneAreaDetector id="queue_west" lane="west_in_0" pos="-150.00" length="145.00" period="1.00" file="output_queues.xml"/>
+</additional>

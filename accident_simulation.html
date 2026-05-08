@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SUMO Accident Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #0a0c0f;
+    --surface:   #111418;
+    --surface2:  #181c22;
+    --border:    #2a3040;
+    --accent:    #ff3c3c;
+    --accent2:   #00c8ff;
+    --accent3:   #ffaa00;
+    --green:     #00e676;
+    --text:      #d0d8e8;
+    --muted:     #5a6478;
+    --mono:      'Share Tech Mono', monospace;
+    --sans:      'Barlow', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Scanline overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 2px solid var(--accent);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: 'SUMO TRACI v1.25';
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: 2px;
+  }
+  .header-icon {
+    width: 44px; height: 44px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    animation: pulse-hex 3s ease-in-out infinite;
+  }
+  @keyframes pulse-hex {
+    0%,100% { filter: brightness(1); }
+    50%      { filter: brightness(1.4) drop-shadow(0 0 8px var(--accent)); }
+  }
+  .header-icon svg { width: 22px; height: 22px; fill: white; }
+  h1 {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  h1 span { color: var(--accent); }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Info cards row ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    padding: 18px 20px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:nth-child(2) { border-top-color: var(--accent2); }
+  .card:nth-child(3) { border-top-color: var(--accent3); }
+  .card:nth-child(4) { border-top-color: var(--green); }
+  .card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .card-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  .card-value span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  /* ── Color guide ── */
+  .color-guide {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+  }
+  .color-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .color-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px currentColor;
+  }
+  .dot-red    { background: #ff3c3c; color: #ff3c3c; }
+  .dot-cyan   { background: #00c8ff; color: #00c8ff; }
+  .dot-orange { background: #ffaa00; color: #ffaa00; }
+  .dot-yellow { background: #ffe500; color: #ffe500; }
+
+  /* ── Code block ── */
+  .code-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .code-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .code-filename {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+  }
+  .code-lang {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--bg);
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+  }
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .copy-btn:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+  .copy-btn.copied {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.75;
+    padding: 28px 28px 28px 0;
+    overflow-x: auto;
+    counter-reset: line;
+    color: #c8d4e8;
+  }
+  pre .line {
+    display: block;
+    padding-left: 60px;
+    position: relative;
+    min-height: 1.75em;
+  }
+  pre .line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: 0;
+    width: 44px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 11px;
+    user-select: none;
+    opacity: 0.5;
+    padding-right: 16px;
+    border-right: 1px solid var(--border);
+  }
+  pre .line:hover { background: rgba(255,255,255,0.03); }
+
+  /* Syntax colors */
+  .kw  { color: #ff6b9d; }   /* keywords */
+  .fn  { color: #79c0ff; }   /* functions/methods */
+  .st  { color: #a5d6a7; }   /* strings */
+  .cm  { color: #546478; font-style: italic; } /* comments */
+  .nm  { color: #ffcc80; }   /* numbers */
+  .cl  { color: #f0c060; }   /* class names */
+  .dc  { color: #80deea; }   /* decorators/special */
+
+  /* ── Usage section ── */
+  .usage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 36px;
+  }
+  .usage-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+  .usage-card h3 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 16px;
+    font-family: var(--mono);
+  }
+  .cmd {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cmd::before { content: '$'; color: var(--muted); flex-shrink: 0; }
+  .param-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .param-row:last-child { border-bottom: none; }
+  .param-name { font-family: var(--mono); color: var(--accent3); font-size: 12px; }
+  .param-val  { color: var(--accent2); font-weight: 600; }
+  .param-desc { color: var(--muted); font-size: 12px; }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .blink { animation: blink 1.2s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .container { padding: 24px 20px 60px; }
+    header { padding: 20px; }
+    header::after { display: none; }
+    .cards { grid-template-columns: 1fr 1fr; }
+    .usage-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7L12 19.82 4 15.5v-7L12 4.18z"/></svg>
+  </div>
+  <div>
+    <h1>SUMO <span>Accident</span> Simulation</h1>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="section-label">Simulation Parameters</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Accidents / Day</div>
+      <div class="card-value">2<span>events</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Min Blockage</div>
+      <div class="card-value">60<span>sec</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Max Blockage</div>
+      <div class="card-value">180<span>sec</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Lane Changing</div>
+      <div class="card-value" style="font-size:16px;padding-top:4px">SUMO<span>default</span></div>
+    </div>
+  </div>
+
+  <!-- Color guide -->
+  <div class="section-label">Vehicle Color Guide</div>
+  <div class="color-guide">
+    <div class="color-item"><div class="color-dot dot-red"></div> Stopped accident vehicle</div>
+    <div class="color-item"><div class="color-dot dot-cyan"></div> Slowed / rubbernecking</div>
+    <div class="color-item"><div class="color-dot dot-yellow"></div> Normal / restored</div>
+  </div>
+
+  <!-- Code -->
+  <div class="section-label">Python Script — accident_simulation.py</div>
+  <div class="code-wrapper">
+    <div class="code-header">
+      <span class="code-filename">accident_simulation.py</span>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span class="code-lang">Python 3</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy</button>
+      </div>
+    </div>
+    <pre id="codeBlock"><span class="line"><span class="cm">"""</span></span>
+<span class="line"><span class="cm">accident_simulation.py</span></span>
+<span class="line"><span class="cm">──────────────────────</span></span>
+<span class="line"><span class="cm">Runs SUMO via TraCI. Injects 2 random accidents per simulation.</span></span>
+<span class="line"><span class="cm">Lane changing is handled entirely by SUMO's default LC2013 model.</span></span>
+<span class="line"><span class="cm">Accidents stop a vehicle in place; surrounding vehicles slow down</span></span>
+<span class="line"><span class="cm">and change lanes / queue naturally via SUMO's built-in behavior.</span></span>
+<span class="line"><span class="cm"></span></span>
+<span class="line"><span class="cm">Usage:</span></span>
+<span class="line"><span class="cm">    python accident_simulation.py           # GUI, 2 accidents</span></span>
+<span class="line"><span class="cm">    python accident_simulation.py --nogui   # headless</span></span>
+<span class="line"><span class="cm">    python accident_simulation.py --seed 42 # reproducible</span></span>
+<span class="line"><span class="cm">"""</span></span>
+<span class="line"></span>
+<span class="line"><span class="kw">import</span> sys</span>
+<span class="line"><span class="kw">import</span> random</span>
+<span class="line"><span class="kw">import</span> argparse</span>
+<span class="line"><span class="kw">import</span> traci</span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Argument parsing ───────────────────────────────────────────────────────</span></span>
+<span class="line">parser = argparse.<span class="fn">ArgumentParser</span>(description=<span class="st">"SUMO accident simulation"</span>)</span>
+<span class="line">parser.<span class="fn">add_argument</span>(<span class="st">"--nogui"</span>, action=<span class="st">"store_true"</span>)</span>
+<span class="line">parser.<span class="fn">add_argument</span>(<span class="st">"--seed"</span>,  type=int, default=<span class="kw">None</span>)</span>
+<span class="line">args = parser.<span class="fn">parse_args</span>()</span>
+<span class="line"></span>
+<span class="line"><span class="kw">if</span> args.seed <span class="kw">is not</span> <span class="kw">None</span>:</span>
+<span class="line">    random.<span class="fn">seed</span>(args.seed)</span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── SUMO binary ────────────────────────────────────────────────────────────</span></span>
+<span class="line">SUMO_BINARY = <span class="st">"sumo"</span> <span class="kw">if</span> args.nogui <span class="kw">else</span> <span class="st">"sumo-gui"</span></span>
+<span class="line">SUMO_CMD = [</span>
+<span class="line">    SUMO_BINARY,</span>
+<span class="line">    <span class="st">"-c"</span>, <span class="st">"intersection2.sumocfg"</span>,</span>
+<span class="line">    <span class="st">"--no-step-log"</span>,</span>
+<span class="line">    <span class="st">"--waiting-time-memory"</span>, <span class="st">"1000"</span>,</span>
+<span class="line">]</span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Configuration ──────────────────────────────────────────────────────────</span></span>
+<span class="line">SIM_END           = <span class="nm">3600</span></span>
+<span class="line">NUM_ACCIDENTS     = <span class="nm">2</span>          <span class="cm"># exactly 2 per simulation run</span></span>
+<span class="line">MIN_DURATION      = <span class="nm">60</span>         <span class="cm"># shortest blockage (seconds)</span></span>
+<span class="line">MAX_DURATION      = <span class="nm">180</span>        <span class="cm"># longest blockage (seconds)</span></span>
+<span class="line">SLOWDOWN_RADIUS   = <span class="nm">50.0</span>       <span class="cm"># rubbernecking slow zone (metres)</span></span>
+<span class="line">SLOWDOWN_FACTOR   = <span class="nm">0.2</span>        <span class="cm"># reduce speed to 20% of normal</span></span>
+<span class="line">EARLIEST_ACCIDENT = <span class="nm">300</span>        <span class="cm"># don't trigger before t=300s</span></span>
+<span class="line">LATEST_ACCIDENT   = SIM_END - MAX_DURATION - <span class="nm">60</span></span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Accident state ─────────────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">class</span> <span class="cl">Accident</span>:</span>
+<span class="line">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, trigger_time):</span>
+<span class="line">        <span class="kw">self</span>.trigger_time = trigger_time</span>
+<span class="line">        <span class="kw">self</span>.vehicle_id   = <span class="kw">None</span></span>
+<span class="line">        <span class="kw">self</span>.end_time     = <span class="kw">None</span></span>
+<span class="line">        <span class="kw">self</span>.position     = <span class="kw">None</span></span>
+<span class="line">        <span class="kw">self</span>.slowed       = {}     <span class="cm"># {veh_id: original_maxSpeed}</span></span>
+<span class="line">        <span class="kw">self</span>.active       = <span class="kw">False</span></span>
+<span class="line">        <span class="kw">self</span>.cleared      = <span class="kw">False</span></span>
+<span class="line"></span>
+<span class="line"><span class="kw">def</span> <span class="fn">schedule_accidents</span>(n):</span>
+<span class="line">    <span class="cm"># Pick n non-overlapping random trigger times spread across the day</span></span>
+<span class="line">    times = <span class="fn">sorted</span>(random.<span class="fn">sample</span>(<span class="fn">range</span>(EARLIEST_ACCIDENT, LATEST_ACCIDENT), n))</span>
+<span class="line">    <span class="kw">return</span> [<span class="cl">Accident</span>(t) <span class="kw">for</span> t <span class="kw">in</span> times]</span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Geometry helper ────────────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">def</span> <span class="fn">distance</span>(p1, p2):</span>
+<span class="line">    <span class="kw">return</span> ((p1[<span class="nm">0</span>]-p2[<span class="nm">0</span>])**<span class="nm">2</span> + (p1[<span class="nm">1</span>]-p2[<span class="nm">1</span>])**<span class="nm">2</span>) ** <span class="nm">0.5</span></span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Activate accident ──────────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">def</span> <span class="fn">activate_accident</span>(accident, step):</span>
+<span class="line">    vehicles = traci.vehicle.<span class="fn">getIDList</span>()</span>
+<span class="line">    <span class="kw">if not</span> vehicles:</span>
+<span class="line">        <span class="fn">print</span>(<span class="st">f"  [t={step}] No vehicles on road, retrying in 30s."</span>)</span>
+<span class="line">        <span class="kw">return False</span></span>
+<span class="line"></span>
+<span class="line">    victim   = random.<span class="fn">choice</span>(vehicles)</span>
+<span class="line">    duration = random.<span class="fn">randint</span>(MIN_DURATION, MAX_DURATION)</span>
+<span class="line">    lane_id  = traci.vehicle.<span class="fn">getLaneID</span>(victim)</span>
+<span class="line">    lane_pos = traci.vehicle.<span class="fn">getLanePosition</span>(victim)</span>
+<span class="line">    x, y     = traci.vehicle.<span class="fn">getPosition</span>(victim)</span>
+<span class="line">    edge_id  = traci.vehicle.<span class="fn">getRoadID</span>(victim)</span>
+<span class="line"></span>
+<span class="line">    <span class="cm"># Freeze the victim — let SUMO handle everything behind it</span></span>
+<span class="line">    traci.vehicle.<span class="fn">setSpeed</span>(victim, <span class="nm">0</span>)</span>
+<span class="line">    traci.vehicle.<span class="fn">setSpeedMode</span>(victim, <span class="nm">0</span>)        <span class="cm"># ignore safety checks on victim</span></span>
+<span class="line">    <span class="cm"># NOTE: lane-change mode is NOT overridden for other vehicles</span></span>
+<span class="line">    <span class="cm"># SUMO's LC2013 model handles all lane changes automatically</span></span>
+<span class="line">    traci.vehicle.<span class="fn">setColor</span>(victim, (<span class="nm">255</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">255</span>))   <span class="cm"># RED</span></span>
+<span class="line"></span>
+<span class="line">    accident.vehicle_id = victim</span>
+<span class="line">    accident.end_time   = step + duration</span>
+<span class="line">    accident.position   = (x, y)</span>
+<span class="line">    accident.active     = <span class="kw">True</span></span>
+<span class="line"></span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"\n🚨 ACCIDENT at t={step}s"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"   Vehicle  : {victim}"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"   Edge     : {edge_id}  Lane: {lane_id}"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"   Position : x={x:.1f}, y={y:.1f}  lane_pos={lane_pos:.1f}m"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"   Duration : {duration}s  →  clears at t={accident.end_time}s"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"   ↳ SUMO LC2013 model handles lane changes automatically"</span>)</span>
+<span class="line">    <span class="kw">return True</span></span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Rubbernecking slowdown ─────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">def</span> <span class="fn">apply_slowdown</span>(accident):</span>
+<span class="line">    ax, ay = accident.position</span>
+<span class="line">    <span class="kw">for</span> vid <span class="kw">in</span> traci.vehicle.<span class="fn">getIDList</span>():</span>
+<span class="line">        <span class="kw">if</span> vid == accident.vehicle_id <span class="kw">or</span> vid <span class="kw">in</span> accident.slowed:</span>
+<span class="line">            <span class="kw">continue</span></span>
+<span class="line">        vx, vy = traci.vehicle.<span class="fn">getPosition</span>(vid)</span>
+<span class="line">        <span class="kw">if</span> <span class="fn">distance</span>((vx, vy), (ax, ay)) &lt;= SLOWDOWN_RADIUS:</span>
+<span class="line">            original = traci.vehicle.<span class="fn">getMaxSpeed</span>(vid)</span>
+<span class="line">            traci.vehicle.<span class="fn">setMaxSpeed</span>(vid, original * SLOWDOWN_FACTOR)</span>
+<span class="line">            traci.vehicle.<span class="fn">setColor</span>(vid, (<span class="nm">0</span>, <span class="nm">200</span>, <span class="nm">255</span>, <span class="nm">255</span>))  <span class="cm"># CYAN</span></span>
+<span class="line">            accident.slowed[vid] = original</span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Restore after clearance ────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">def</span> <span class="fn">restore_all</span>(accident):</span>
+<span class="line">    <span class="kw">for</span> vid, spd <span class="kw">in</span> accident.slowed.<span class="fn">items</span>():</span>
+<span class="line">        <span class="kw">try</span>:</span>
+<span class="line">            traci.vehicle.<span class="fn">setMaxSpeed</span>(vid, spd)</span>
+<span class="line">            traci.vehicle.<span class="fn">setSpeedMode</span>(vid, <span class="nm">31</span>)   <span class="cm"># restore default speed mode</span></span>
+<span class="line">            traci.vehicle.<span class="fn">setColor</span>(vid, (<span class="nm">255</span>, <span class="nm">255</span>, <span class="nm">0</span>, <span class="nm">255</span>))  <span class="cm"># YELLOW</span></span>
+<span class="line">        <span class="kw">except</span> traci.exceptions.<span class="cl">TraCIException</span>:</span>
+<span class="line">            <span class="kw">pass</span>  <span class="cm"># vehicle already left the simulation</span></span>
+<span class="line">    accident.slowed.<span class="fn">clear</span>()</span>
+<span class="line"></span>
+<span class="line"><span class="kw">def</span> <span class="fn">clear_accident</span>(accident, step):</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"\n✅ CLEARED  at t={step}s  —  {accident.vehicle_id}"</span>)</span>
+<span class="line">    <span class="fn">restore_all</span>(accident)</span>
+<span class="line">    <span class="kw">try</span>:</span>
+<span class="line">        traci.vehicle.<span class="fn">remove</span>(accident.vehicle_id)</span>
+<span class="line">    <span class="kw">except</span> traci.exceptions.<span class="cl">TraCIException</span>:</span>
+<span class="line">        <span class="kw">pass</span></span>
+<span class="line">    accident.active  = <span class="kw">False</span></span>
+<span class="line">    accident.cleared = <span class="kw">True</span></span>
+<span class="line"></span>
+<span class="line"><span class="cm"># ── Main simulation loop ───────────────────────────────────────────────────</span></span>
+<span class="line"><span class="kw">def</span> <span class="fn">run</span>():</span>
+<span class="line">    traci.<span class="fn">start</span>(SUMO_CMD)</span>
+<span class="line">    accidents = <span class="fn">schedule_accidents</span>(NUM_ACCIDENTS)</span>
+<span class="line"></span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"\n{'='*55}"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"  Accidents scheduled at: {[a.trigger_time for a in accidents]}"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"  Lane changes : SUMO default LC2013 model"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"{'='*55}\n"</span>)</span>
+<span class="line"></span>
+<span class="line">    step = <span class="nm">0</span></span>
+<span class="line">    <span class="kw">while</span> step &lt; SIM_END:</span>
+<span class="line">        traci.<span class="fn">simulationStep</span>()</span>
+<span class="line"></span>
+<span class="line">        <span class="kw">for</span> accident <span class="kw">in</span> accidents:</span>
+<span class="line"></span>
+<span class="line">            <span class="cm"># Trigger</span></span>
+<span class="line">            <span class="kw">if</span> (<span class="kw">not</span> accident.active <span class="kw">and not</span> accident.cleared</span>
+<span class="line">                    <span class="kw">and</span> step >= accident.trigger_time):</span>
+<span class="line">                <span class="kw">if not</span> <span class="fn">activate_accident</span>(accident, step):</span>
+<span class="line">                    accident.trigger_time = step + <span class="nm">30</span></span>
+<span class="line"></span>
+<span class="line">            <span class="cm"># Active — keep frozen + apply slowdown</span></span>
+<span class="line">            <span class="kw">if</span> accident.active:</span>
+<span class="line">                <span class="kw">try</span>:</span>
+<span class="line">                    traci.vehicle.<span class="fn">setSpeed</span>(accident.vehicle_id, <span class="nm">0</span>)</span>
+<span class="line">                <span class="kw">except</span> traci.exceptions.<span class="cl">TraCIException</span>:</span>
+<span class="line">                    <span class="fn">clear_accident</span>(accident, step)</span>
+<span class="line">                    <span class="kw">continue</span></span>
+<span class="line"></span>
+<span class="line">                <span class="fn">apply_slowdown</span>(accident)</span>
+<span class="line"></span>
+<span class="line">                <span class="cm"># Clear when duration elapsed</span></span>
+<span class="line">                <span class="kw">if</span> step >= accident.end_time:</span>
+<span class="line">                    <span class="fn">clear_accident</span>(accident, step)</span>
+<span class="line"></span>
+<span class="line">        step += <span class="nm">1</span></span>
+<span class="line"></span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"\n{'='*55}"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"  Simulation complete — {NUM_ACCIDENTS} accidents simulated"</span>)</span>
+<span class="line">    <span class="fn">print</span>(<span class="st">f"{'='*55}\n"</span>)</span>
+<span class="line">    traci.<span class="fn">close</span>()</span>
+<span class="line">    sys.stdout.<span class="fn">flush</span>()</span>
+<span class="line"></span>
+<span class="line"><span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:</span>
+<span class="line">    <span class="fn">run</span>()</span></pre>
+  </div>
+
+  <!-- Usage + params -->
+  <div class="usage-grid">
+    <div class="usage-card">
+      <h3>Run Commands</h3>
+      <div class="cmd">python accident_simulation.py</div>
+      <div class="cmd">python accident_simulation.py --nogui</div>
+      <div class="cmd">python accident_simulation.py --seed 42</div>
+    </div>
+    <div class="usage-card">
+      <h3>Tunable Parameters</h3>
+      <div class="param-row">
+        <span class="param-name">NUM_ACCIDENTS</span>
+        <span class="param-val">2</span>
+        <span class="param-desc">accidents per run</span>
+      </div>
+      <div class="param-row">
+        <span class="param-name">MIN_DURATION</span>
+        <span class="param-val">60s</span>
+        <span class="param-desc">shortest blockage</span>
+      </div>
+      <div class="param-row">
+        <span class="param-name">MAX_DURATION</span>
+        <span class="param-val">180s</span>
+        <span class="param-desc">longest blockage</span>
+      </div>
+      <div class="param-row">
+        <span class="param-name">SLOWDOWN_RADIUS</span>
+        <span class="param-val">50m</span>
+        <span class="param-desc">rubberneck zone</span>
+      </div>
+      <div class="param-row">
+        <span class="param-name">SLOWDOWN_FACTOR</span>
+        <span class="param-val">0.2</span>
+        <span class="param-desc">20% of normal speed</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>SUMO v1.25.0 · TraCI · LC2013 Lane-Change Model</span>
+  <span>Place in same folder as intersection2.sumocfg <span class="blink">█</span></span>
+</footer>
+
+<script>
+  function copyCode() {
+    // Extract plain text from the styled spans
+    const pre = document.getElementById('codeBlock');
+    const lines = pre.querySelectorAll('.line');
+    const text = Array.from(lines).map(l => l.innerText).join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
