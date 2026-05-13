@@ -36,17 +36,33 @@ CTRL_KEY = {"Rule-Based": "rb", "DQN": "dqn", "Active Inference": "ai"}
 
 
 def agg_at_t(df: pd.DataFrame, value_col: str) -> pd.DataFrame:
-    g = df.groupby(["controller", "ttime"])[value_col].agg(["mean", "std"]).reset_index()
+    """Per-tick mean and SEM across seeds, pivoted out per controller.
+
+    The lo/hi columns are mean +- SEM (= std / sqrt(n_seeds)), i.e. the
+    uncertainty of the per-tick mean, not the spread of individual runs.
+    This keeps the inter-controller ordering visually separable under
+    full disturbance, where the across-seed std is large.
+    """
+    g = (df.groupby(["controller", "ttime"])[value_col]
+         .agg(mean="mean", std="std", n="count").reset_index())
     g["std"] = g["std"].fillna(0.0)
+    g["sem"] = g["std"] / np.sqrt(g["n"].clip(lower=1))
+    # Drop ticks where any controller has fewer than the maximum number of
+    # seeds reporting; otherwise the per-tick mean dips spuriously at the
+    # tail as individual runs finish at slightly different times.
+    n_max = g["n"].max()
+    valid_ticks = (g.groupby("ttime")["n"].min() == n_max)
+    keep = valid_ticks[valid_ticks].index
+    g = g[g["ttime"].isin(keep)]
     pivot_mean = g.pivot(index="ttime", columns="controller", values="mean")
-    pivot_std = g.pivot(index="ttime", columns="controller", values="std")
+    pivot_sem = g.pivot(index="ttime", columns="controller", values="sem")
     out = pd.DataFrame({"t": pivot_mean.index})
     for ctrl, key in CTRL_KEY.items():
         mean = pivot_mean[ctrl].values
-        std = pivot_std[ctrl].values
+        sem = pivot_sem[ctrl].values
         out[key] = mean
-        out[f"{key}_lo"] = np.maximum(mean - std, 0.0)
-        out[f"{key}_hi"] = mean + std
+        out[f"{key}_lo"] = np.maximum(mean - sem, 0.0)
+        out[f"{key}_hi"] = mean + sem
     return out.reset_index(drop=True)
 
 
