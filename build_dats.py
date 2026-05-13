@@ -47,17 +47,21 @@ def agg_at_t(df: pd.DataFrame, value_col: str) -> pd.DataFrame:
          .agg(mean="mean", std="std", n="count").reset_index())
     g["std"] = g["std"].fillna(0.0)
     g["sem"] = g["std"] / np.sqrt(g["n"].clip(lower=1))
-    # Drop ticks where any controller has fewer than the maximum number of
-    # seeds reporting; otherwise the per-tick mean dips spuriously at the
-    # tail as individual runs finish at slightly different times.
-    n_max = g["n"].max()
-    valid_ticks = (g.groupby("ttime")["n"].min() == n_max)
-    keep = valid_ticks[valid_ticks].index
-    g = g[g["ttime"].isin(keep)]
+    # Per-controller "settled" cutoff: the last tick where this controller
+    # still has the full 100-seed sample. Past that, drop the controller's
+    # entries: the mean over a partial subset would be biased (only the
+    # seeds whose simulations happen to run longest contribute).
+    n_max = g.groupby("controller")["n"].max()
+    g = g[g.apply(lambda r: r["n"] == n_max[r["controller"]], axis=1)]
     pivot_mean = g.pivot(index="ttime", columns="controller", values="mean")
     pivot_sem = g.pivot(index="ttime", columns="controller", values="sem")
     out = pd.DataFrame({"t": pivot_mean.index})
     for ctrl, key in CTRL_KEY.items():
+        if ctrl not in pivot_mean.columns:
+            out[key] = float("nan")
+            out[f"{key}_lo"] = float("nan")
+            out[f"{key}_hi"] = float("nan")
+            continue
         mean = pivot_mean[ctrl].values
         sem = pivot_sem[ctrl].values
         out[key] = mean

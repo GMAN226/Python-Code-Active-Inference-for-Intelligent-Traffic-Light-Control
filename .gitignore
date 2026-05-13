@@ -7,3 +7,6 @@ __pycache__/
 output_loops.xml
 output_queues.xml
 output_tripinfo.xml
+
+# latex stray output from pdflatex invocations against missing root dirs
+texput.log

@@ -1,0 +1,205 @@
+Scenario 3: weather=True accident=False occlusion=True
+
+=== S3 Active Inference: 100 seeds ===
+ Retrying in 1 seconds
+  S3 ai  seed=  1  cum_idle=    8103  sw=272  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed=  2  cum_idle=    8145  sw=260  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed=  3  cum_idle=    7841  sw=268  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed=  4  cum_idle=    8478  sw=259  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed=  5  cum_idle=    7055  sw=268  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed=  6  cum_idle=    8397  sw=266  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed=  7  cum_idle=    7650  sw=272  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed=  8  cum_idle=    8051  sw=262  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed=  9  cum_idle=    7828  sw=274  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 10  cum_idle=    7279  sw=281  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 11  cum_idle=    7316  sw=272  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 12  cum_idle=    6763  sw=271  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 13  cum_idle=    7627  sw=266  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 14  cum_idle=    6539  sw=275  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 15  cum_idle=    6728  sw=280  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 16  cum_idle=    7349  sw=269  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 17  cum_idle=    6889  sw=280  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 18  cum_idle=    7117  sw=265  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 19  cum_idle=    6991  sw=272  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 20  cum_idle=    7252  sw=280  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 21  cum_idle=    7355  sw=274  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 22  cum_idle=    7576  sw=268  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 23  cum_idle=    7439  sw=265  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 24  cum_idle=    6356  sw=273  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 25  cum_idle=    7068  sw=272  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 26  cum_idle=    7122  sw=271  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 27  cum_idle=    7825  sw=265  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 28  cum_idle=    6225  sw=277  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 29  cum_idle=    6724  sw=274  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 30  cum_idle=    6404  sw=280  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 31  cum_idle=    7707  sw=266  (10.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 32  cum_idle=    6800  sw=268  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 33  cum_idle=    7202  sw=264  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 34  cum_idle=    7432  sw=274  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 35  cum_idle=    7470  sw=268  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 36  cum_idle=    7471  sw=270  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 37  cum_idle=    6234  sw=281  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 38  cum_idle=    7692  sw=267  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 39  cum_idle=    6656  sw=272  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 40  cum_idle=    8539  sw=267  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 41  cum_idle=    7590  sw=258  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 42  cum_idle=    7450  sw=276  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 43  cum_idle=    7559  sw=262  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 44  cum_idle=    6954  sw=271  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 45  cum_idle=    7181  sw=262  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 46  cum_idle=    8204  sw=261  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 47  cum_idle=    6852  sw=270  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 48  cum_idle=    6829  sw=270  (9.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 49  cum_idle=    8051  sw=276  (9.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 50  cum_idle=    7464  sw=274  (9.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 51  cum_idle=    6884  sw=278  (10.1s)
+ Retrying in 1 seconds
+  S3 ai  seed= 52  cum_idle=    8289  sw=259  (9.0s)
+ Retrying in 1 seconds
+  S3 ai  seed= 53  cum_idle=    7695  sw=267  (8.9s)
+ Retrying in 1 seconds
+  S3 ai  seed= 54  cum_idle=    7061  sw=266  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 55  cum_idle=    6993  sw=275  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 56  cum_idle=    7400  sw=276  (8.7s)
+ Retrying in 1 seconds
+  S3 ai  seed= 57  cum_idle=    7129  sw=276  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 58  cum_idle=    7036  sw=268  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 59  cum_idle=    7597  sw=267  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 60  cum_idle=    7347  sw=273  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 61  cum_idle=    7199  sw=269  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 62  cum_idle=    7231  sw=270  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 63  cum_idle=    7268  sw=256  (8.8s)
+ Retrying in 1 seconds
+  S3 ai  seed= 64  cum_idle=    7132  sw=265  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 65  cum_idle=    6348  sw=287  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 66  cum_idle=    5940  sw=281  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 67  cum_idle=    6239  sw=279  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 68  cum_idle=    6110  sw=284  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 69  cum_idle=    7514  sw=262  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 70  cum_idle=    7962  sw=261  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 71  cum_idle=    7062  sw=272  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 72  cum_idle=    7138  sw=274  (8.7s)
+ Retrying in 1 seconds
+  S3 ai  seed= 73  cum_idle=    7363  sw=276  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 74  cum_idle=    8189  sw=268  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 75  cum_idle=    7126  sw=271  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 76  cum_idle=    7037  sw=265  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 77  cum_idle=    8624  sw=268  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 78  cum_idle=    7017  sw=270  (8.4s)
+ Retrying in 1 seconds
+  S3 ai  seed= 79  cum_idle=    7552  sw=265  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 80  cum_idle=    7512  sw=268  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 81  cum_idle=    7933  sw=271  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 82  cum_idle=    7267  sw=274  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 83  cum_idle=    6504  sw=277  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 84  cum_idle=    7734  sw=268  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 85  cum_idle=    6902  sw=267  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 86  cum_idle=    6160  sw=280  (8.6s)
+ Retrying in 1 seconds
+  S3 ai  seed= 87  cum_idle=    8284  sw=262  (8.5s)
+ Retrying in 1 seconds
+  S3 ai  seed= 88  cum_idle=    7747  sw=264  (8.7s)
+ Retrying in 1 seconds
+  S3 ai  seed= 89  cum_idle=    6929  sw=272  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 90  cum_idle=    7130  sw=269  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 91  cum_idle=    8114  sw=269  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 92  cum_idle=    7456  sw=269  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 93  cum_idle=    6725  sw=277  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 94  cum_idle=    6707  sw=268  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 95  cum_idle=    7749  sw=269  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 96  cum_idle=    7402  sw=273  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 97  cum_idle=    8245  sw=255  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed= 98  cum_idle=    6205  sw=280  (8.2s)
+ Retrying in 1 seconds
+  S3 ai  seed= 99  cum_idle=    6282  sw=276  (8.3s)
+ Retrying in 1 seconds
+  S3 ai  seed=100  cum_idle=    7365  sw=262  (8.2s)
+
+Wrote /Users/edwin/Downloads/WF_IoT_AIF_for_TSC/sumo_repo/results_aih/traces_s3.csv and /Users/edwin/Downloads/WF_IoT_AIF_for_TSC/sumo_repo/results_aih/summary_s3.csv (total elapsed: 14.1 min)

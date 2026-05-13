@@ -368,7 +368,90 @@ AI_PREFERRED_MEANS = [5, 14, 0]
 AI_PREFERRED_COV = AI_SIGMAS[0]
 
 
-def ai_decide(NS_obs, EW_obs, NS_CO2, EW_CO2, NS_bus, EW_bus, prior_states):
+def _compute_log_pref():
+    log_pref = np.zeros(AI_STATES)
+    Sigma_inv = np.linalg.inv(AI_PREFERRED_COV)
+    log_det = np.log(np.linalg.det(AI_PREFERRED_COV))
+    d = len(AI_PREFERRED_MEANS)
+    for j in range(AI_STATES):
+        diff = np.array(AI_PREFERRED_MEANS) - AI_MEANS[j]
+        log_pref[j] = -0.5 * (
+            d * np.log(2 * np.pi) + log_det
+            + np.trace(Sigma_inv @ AI_SIGMAS[j])
+            + diff.T @ Sigma_inv @ diff
+        )
+    log_pref -= log_pref.max()
+    log_pref /= abs(log_pref.min())
+    return log_pref
+
+
+AI_LOG_PREF = _compute_log_pref()
+
+
+def _one_step_efe(belief, prior, ns_w, ew_w, log_pref=AI_LOG_PREF):
+    """Compute EFE for both candidate actions from `belief` (shape 2 x N_STATES).
+
+    The pragmatic-value step weights NS vs EW direction scores by observed
+    counts (`ns_w`, `ew_w`). In a multi-step rollout future observations
+    are not available; the caller fills these in with the expected count
+    under the current belief.
+
+    Returns (efe_ns, efe_ew, gn_next, ge_next) where gn_next/ge_next are
+    the un-normalised next-step beliefs under each action.
+    """
+    gn_next = np.array([belief[0] @ AI_TRANS_GREEN_NS, belief[1] @ AI_TRANS_RED_EW])
+    ge_next = np.array([belief[0] @ AI_TRANS_RED_NS, belief[1] @ AI_TRANS_GREEN_EW])
+
+    scores_ns = gn_next @ log_pref
+    scores_ew = ge_next @ log_pref
+    denom = ns_w + ew_w + 1e-300
+    pv_ns = (ns_w / denom) * scores_ns[0] + (ew_w / denom) * scores_ns[1]
+    pv_ew = (ew_w / denom) * scores_ew[0] + (ns_w / denom) * scores_ew[1]
+    norm = abs(pv_ns + pv_ew + 1e-300)
+    pv_ns /= norm
+    pv_ew /= norm
+
+    eps = 1e-6
+    gn = np.clip(gn_next, eps, 1)
+    ge = np.clip(ge_next, eps, 1)
+    pr = np.clip(prior, eps, 1)
+    kl_ns = np.sum(gn * (np.log(gn) - np.log(pr)))
+    kl_ew = np.sum(ge * (np.log(ge) - np.log(pr)))
+    knorm = abs(kl_ns + kl_ew + 1e-300)
+    kl_ns /= knorm
+    kl_ew /= knorm
+
+    return -pv_ns - 0.5 * kl_ns, -pv_ew - 0.5 * kl_ew, gn_next, ge_next
+
+
+# Rollout horizon: with gamma=0.99, gamma^500 ~ 0.007, so the truncated sum
+# captures >99% of the infinite-horizon discounted weight.
+AI_HORIZON = 500
+AI_GAMMA = 0.99
+# Outer softmax temperature on cumulative EFE. `None` = greedy argmin (matches
+# DQN argmax_a Q at eval). A finite negative value gives stochastic outer
+# action selection; magnitude is on the cumulative-EFE scale (~10-100).
+AI_BETA: float | None = None
+
+
+def ai_decide(NS_obs, EW_obs, NS_CO2, EW_CO2, NS_bus, EW_bus, prior_states,
+              horizon: int = AI_HORIZON, gamma: float = AI_GAMMA,
+              beta=AI_BETA):
+    """Active-inference action selection with a gamma-discounted greedy rollout.
+
+    At each decision tick, for each candidate first action we run a
+    length-`horizon` rollout where actions are picked greedily (argmin
+    one-step EFE) at every step - structurally the same as DQN's target
+    policy `max_{a'} Q(s', a')` in the Bellman bootstrap. The cumulative
+    score along the rollout is gamma-discounted EFE:
+        G(a_0) = sum_{t=0}^{H-1} gamma^t * EFE_t(pi_greedy).
+    The outer decision is argmin over G (matches DQN eval-time argmax over
+    Q) when `beta` is None, or a softmax(beta * (-G)) sample otherwise.
+
+    At rollout step 0 the pragmatic-value weights are the actually-observed
+    NS/EW counts. At step t > 0 we use the expected NS/EW count under the
+    rolled-forward belief, since no real observation is available.
+    """
     obs = np.array([
         [NS_obs, NS_CO2 / 1000, len(NS_bus)],
         [EW_obs, EW_CO2 / 1000, len(EW_bus)],
@@ -383,50 +466,45 @@ def ai_decide(NS_obs, EW_obs, NS_CO2, EW_CO2, NS_bus, EW_bus, prior_states):
     post = np.exp(post)
     post /= post.sum(axis=1, keepdims=True)
 
-    gn_next = np.array([post[0] @ AI_TRANS_GREEN_NS, post[1] @ AI_TRANS_RED_EW])
-    ge_next = np.array([post[0] @ AI_TRANS_RED_NS, post[1] @ AI_TRANS_GREEN_EW])
+    count_means = AI_MEANS[:, 0]  # expected count per hidden state
 
-    log_pref = np.zeros(AI_STATES)
-    Sigma_inv = np.linalg.inv(AI_PREFERRED_COV)
-    log_det = np.log(np.linalg.det(AI_PREFERRED_COV))
-    d = len(AI_PREFERRED_MEANS)
-    for j in range(AI_STATES):
-        diff = np.array(AI_PREFERRED_MEANS) - AI_MEANS[j]
-        log_pref[j] = -0.5 * (
-            d * np.log(2 * np.pi) + log_det
-            + np.trace(Sigma_inv @ AI_SIGMAS[j])
-            + diff.T @ Sigma_inv @ diff
-        )
-    log_pref -= log_pref.max()
-    log_pref /= abs(log_pref.min())
+    def _rollout(first_action: int) -> float:
+        """Greedy gamma-discounted rollout starting with `first_action`."""
+        belief = post.copy()
+        local_prior = prior_states.copy()
+        action = first_action
+        ns_w, ew_w = NS_obs, EW_obs
+        cum = 0.0
+        for t in range(horizon):
+            efe_ns, efe_ew, gn_next, ge_next = _one_step_efe(
+                belief, local_prior, ns_w, ew_w)
+            efe_taken = efe_ns if action == PHASE_NS_GREEN else efe_ew
+            cum += (gamma ** t) * efe_taken
+            next_belief = gn_next if action == PHASE_NS_GREEN else ge_next
+            next_belief = next_belief / next_belief.sum(axis=1, keepdims=True)
+            # Greedy: argmin one-step EFE for the next action.
+            action = PHASE_NS_GREEN if efe_ns <= efe_ew else PHASE_EW_GREEN
+            local_prior = next_belief
+            belief = next_belief
+            ns_w = float(belief[0] @ count_means)
+            ew_w = float(belief[1] @ count_means)
+        return cum
 
-    scores_ns = gn_next @ log_pref
-    scores_ew = ge_next @ log_pref
-    denom = NS_obs + EW_obs + 1e-300
-    pv_ns = (NS_obs / denom) * scores_ns[0] + (EW_obs / denom) * scores_ns[1]
-    pv_ew = (EW_obs / denom) * scores_ew[0] + (NS_obs / denom) * scores_ew[1]
-    norm = abs(pv_ns + pv_ew + 1e-300)
-    pv_ns /= norm
-    pv_ew /= norm
+    cum_efe_ns = _rollout(PHASE_NS_GREEN)
+    cum_efe_ew = _rollout(PHASE_EW_GREEN)
 
-    eps = 1e-6
-    gn = np.clip(gn_next, eps, 1)
-    ge = np.clip(ge_next, eps, 1)
-    pr = np.clip(prior_states, eps, 1)
-    kl_ns = np.sum(gn * (np.log(gn) - np.log(pr)))
-    kl_ew = np.sum(ge * (np.log(ge) - np.log(pr)))
-    knorm = abs(kl_ns + kl_ew + 1e-300)
-    kl_ns /= knorm
-    kl_ew /= knorm
+    if beta is None:
+        decision = PHASE_NS_GREEN if cum_efe_ns <= cum_efe_ew else PHASE_EW_GREEN
+    else:
+        delta = beta * (cum_efe_ns - cum_efe_ew)
+        p_ns = 1.0 / (1.0 + math.exp(-delta))
+        decision = int(np.random.choice([PHASE_NS_GREEN, PHASE_EW_GREEN],
+                                        p=[p_ns, 1 - p_ns]))
 
-    EFE_ns = -pv_ns - 0.5 * kl_ns
-    EFE_ew = -pv_ew - 0.5 * kl_ew
-    beta = -3
-    exp_ns = math.exp(beta * EFE_ns)
-    exp_ew = math.exp(beta * EFE_ew)
-    p_ns = exp_ns / (exp_ns + exp_ew)
-    decision = int(np.random.choice([0, 2], p=[p_ns, 1 - p_ns]))
-    new_prior = gn_next if decision == 0 else ge_next
+    if decision == PHASE_NS_GREEN:
+        new_prior = np.array([post[0] @ AI_TRANS_GREEN_NS, post[1] @ AI_TRANS_RED_EW])
+    else:
+        new_prior = np.array([post[0] @ AI_TRANS_RED_NS, post[1] @ AI_TRANS_GREEN_EW])
     new_prior /= new_prior.sum(axis=1, keepdims=True)
     return decision, new_prior
 
