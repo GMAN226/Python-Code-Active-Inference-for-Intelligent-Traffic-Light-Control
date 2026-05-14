@@ -558,9 +558,11 @@ GAMMA = 0.99
 LR = 1e-3
 BATCH_SIZE = 64
 BUFFER_SIZE = 50000
+# Linear epsilon schedule: eps_start at ep 0 → eps_end at ep `decay_frac * n_episodes`,
+# then held flat. Eval uses epsilon=0.0 regardless.
 EPS_START = 1.0
-EPS_END = 0.01
-EPS_DECAY = 0.95
+EPS_END = 0.05
+EPS_DECAY_FRAC = 0.1
 TARGET_UPDATE = 360
 
 
@@ -579,7 +581,7 @@ class DQN(nn.Module):
 
 def run_dqn_episode(seed: int, policy_net, target_net, optimizer, memory,
                     epsilon: float, steps_done: int,
-                    train: bool):
+                    train: bool, double_q: bool = False):
     np.random.seed(seed)
     rnd.seed(seed)
     torch.manual_seed(seed)
@@ -588,6 +590,7 @@ def run_dqn_episode(seed: int, policy_net, target_net, optimizer, memory,
     prev_state, prev_action = None, None
     trace = empty_trace()
     eval_time = 10
+    ep_total_reward = 0.0
     try:
         while (traci.simulation.getMinExpectedNumber() > 0
                and traci.simulation.getTime() < 4000):
@@ -616,11 +619,12 @@ def run_dqn_episode(seed: int, policy_net, target_net, optimizer, memory,
                     with torch.no_grad():
                         action = int(policy_net(torch.from_numpy(state).unsqueeze(0))
                                      .argmax().item())
-                reward = -(
-                    (NS_idle + EW_idle)
-                    + 0.0001 * (NS_CO2 + EW_CO2)
+                reward = (
+                    -(NS_idle + EW_idle)
+                    - 0.0001 * (NS_CO2 + EW_CO2)
                     - 0.5 * (len(NS_bus) + len(EW_bus))
                 )
+                ep_total_reward += reward
                 if train and prev_state is not None:
                     memory.append((prev_state, prev_action, reward, state, 0))
                     if len(memory) >= BATCH_SIZE:
@@ -633,7 +637,13 @@ def run_dqn_episode(seed: int, policy_net, target_net, optimizer, memory,
                         d_t = torch.FloatTensor(d_)
                         q = policy_net(s).gather(1, a_t).squeeze()
                         with torch.no_grad():
-                            nq = target_net(sn).max(1)[0]
+                            if double_q:
+                                # Double DQN: argmax from policy_net,
+                                # value lookup from target_net.
+                                next_a = policy_net(sn).argmax(dim=1, keepdim=True)
+                                nq = target_net(sn).gather(1, next_a).squeeze(1)
+                            else:
+                                nq = target_net(sn).max(1)[0]
                             tgt = r_t + GAMMA * nq * (1 - d_t)
                         loss = nn.MSELoss()(q, tgt)
                         optimizer.zero_grad()
@@ -645,17 +655,16 @@ def run_dqn_episode(seed: int, policy_net, target_net, optimizer, memory,
                 steps_done += 1
                 if train and steps_done % TARGET_UPDATE == 0:
                     target_net.load_state_dict(policy_net.state_dict())
-                if train:
-                    epsilon = max(EPS_END, epsilon * EPS_DECAY)
                 trace_append(trace, t, NS_CO2, EW_CO2, NS_true, EW_true,
                              NS_obs, EW_obs, len(NS_bus), len(EW_bus), decision,
                              NS_idle, EW_idle)
     finally:
         traci.close()
-    return trace, epsilon, steps_done
+    return trace, ep_total_reward, steps_done
 
 
-def train_dqn(n_episodes: int = 100, train_seed: int = 42):
+def train_dqn(n_episodes: int = 1000, train_seed: int = 42,
+              double_q: bool = False):
     np.random.seed(train_seed)
     rnd.seed(train_seed)
     torch.manual_seed(train_seed)
@@ -664,19 +673,30 @@ def train_dqn(n_episodes: int = 100, train_seed: int = 42):
     target_net.load_state_dict(policy_net.state_dict())
     optimizer = optim.Adam(policy_net.parameters(), lr=LR)
     memory = deque(maxlen=BUFFER_SIZE)
-    epsilon = EPS_START
+    decay_eps = max(1, int(round(n_episodes * EPS_DECAY_FRAC)))
     steps_done = 0
+    training_curve: List[Dict[str, float]] = []
     for ep in range(n_episodes):
+        if ep < decay_eps:
+            epsilon = EPS_START - (EPS_START - EPS_END) * (ep / decay_eps)
+        else:
+            epsilon = EPS_END
         ep_seed = train_seed * 1000 + ep
-        trace, epsilon, steps_done = run_dqn_episode(
+        trace, ep_total_reward, steps_done = run_dqn_episode(
             ep_seed, policy_net, target_net, optimizer, memory,
-            epsilon, steps_done, train=True)
+            epsilon, steps_done, train=True, double_q=double_q)
+        training_curve.append({
+            "episode": ep + 1,
+            "total_reward": ep_total_reward,
+            "epsilon": epsilon,
+        })
         if (ep + 1) % 10 == 0 or ep == 0:
             s = summarise(trace)
             print(f"  train ep {ep+1}/{n_episodes}  "
-                  f"cum_idle={s['cum_idle']:.0f}  eps={epsilon:.3f}",
+                  f"cum_idle={s['cum_idle']:.0f}  "
+                  f"reward={ep_total_reward:.0f}  eps={epsilon:.3f}",
                   flush=True)
-    return policy_net
+    return policy_net, training_curve
 
 
 def run_dqn_eval(seed: int, policy_net) -> Dict:
@@ -706,7 +726,8 @@ def set_scenario(scenario: int):
           f"accident={ACCIDENT_ON} occlusion={OCCLUSION_ON}", flush=True)
 
 
-CONTROLLER_LABEL = {"rb": "Rule-Based", "ai": "Active Inference", "dqn": "DQN"}
+CONTROLLER_LABEL = {"rb": "Rule-Based", "ai": "Active Inference",
+                    "dqn": "DQN", "ddqn": "Double DQN"}
 
 
 def write_trace(traces_path: str, scenario: int, controller: str, seed: int,
@@ -748,27 +769,51 @@ def write_summary(summary_path: str, scenario: int, controller: str, seed: int,
                     summary["n_ticks"]])
 
 
+def write_training_curve(path: str, scenario: int, controller: str,
+                         curve: List[Dict[str, float]],
+                         header_written: List[bool]):
+    mode = "a" if header_written[0] else "w"
+    with open(path, mode, newline="") as f:
+        w = csv.writer(f)
+        if not header_written[0]:
+            w.writerow(["scenario", "controller", "episode",
+                        "total_reward", "epsilon"])
+            header_written[0] = True
+        for row in curve:
+            w.writerow([scenario, controller,
+                        row["episode"],
+                        f"{row['total_reward']:.3f}",
+                        f"{row['epsilon']:.4f}"])
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--controllers", nargs="+",
-                   default=["rb", "ai", "dqn"], choices=["rb", "ai", "dqn"])
+                   default=["rb", "ai", "dqn"],
+                   choices=["rb", "ai", "dqn", "ddqn"])
     p.add_argument("--seeds", type=int, nargs=2, default=[1, 100])
     p.add_argument("--scenarios", type=int, nargs="+", default=[1, 2, 3, 4])
-    p.add_argument("--dqn-episodes", type=int, default=100)
+    p.add_argument("--dqn-episodes", type=int, default=1000)
     p.add_argument("--traces-out", required=True,
                    help="CSV file for per-timestep traces")
     p.add_argument("--summary-out", required=True,
                    help="CSV file for per-run summary stats")
+    p.add_argument("--training-curve-out", default=None,
+                   help="optional CSV for per-episode DQN/DDQN training "
+                        "(scenario, controller, episode, total_reward, epsilon)")
     args = p.parse_args()
 
     seed_lo, seed_hi = args.seeds
     seeds = list(range(seed_lo, seed_hi + 1))
     trace_hdr = [False]
     sum_hdr = [False]
+    curve_hdr = [False]
     if os.path.exists(args.traces_out):
         os.remove(args.traces_out)
     if os.path.exists(args.summary_out):
         os.remove(args.summary_out)
+    if args.training_curve_out and os.path.exists(args.training_curve_out):
+        os.remove(args.training_curve_out)
     total_t0 = wall_time.time()
 
     for scenario in args.scenarios:
@@ -803,7 +848,11 @@ def main():
         if "dqn" in args.controllers:
             print(f"\n=== S{scenario} DQN: train {args.dqn_episodes} ep, "
                   f"eval {len(seeds)} seeds ===", flush=True)
-            policy_net = train_dqn(n_episodes=args.dqn_episodes)
+            policy_net, dqn_curve = train_dqn(
+                n_episodes=args.dqn_episodes, double_q=False)
+            if args.training_curve_out:
+                write_training_curve(args.training_curve_out, scenario, "DQN",
+                                     dqn_curve, curve_hdr)
             for s in seeds:
                 t0 = wall_time.time()
                 trace = run_dqn_eval(s, policy_net)
@@ -811,6 +860,25 @@ def main():
                 write_trace(args.traces_out, scenario, "DQN", s, trace, trace_hdr)
                 write_summary(args.summary_out, scenario, "DQN", s, summary, sum_hdr)
                 print(f"  S{scenario} dqn seed={s:3d}  "
+                      f"cum_idle={summary['cum_idle']:8.0f}  "
+                      f"sw={summary['switches']:3d}  "
+                      f"({wall_time.time()-t0:.1f}s)", flush=True)
+
+        if "ddqn" in args.controllers:
+            print(f"\n=== S{scenario} Double DQN: train {args.dqn_episodes} ep, "
+                  f"eval {len(seeds)} seeds ===", flush=True)
+            policy_net, ddqn_curve = train_dqn(
+                n_episodes=args.dqn_episodes, double_q=True)
+            if args.training_curve_out:
+                write_training_curve(args.training_curve_out, scenario,
+                                     "Double DQN", ddqn_curve, curve_hdr)
+            for s in seeds:
+                t0 = wall_time.time()
+                trace = run_dqn_eval(s, policy_net)
+                summary = summarise(trace)
+                write_trace(args.traces_out, scenario, "Double DQN", s, trace, trace_hdr)
+                write_summary(args.summary_out, scenario, "Double DQN", s, summary, sum_hdr)
+                print(f"  S{scenario} ddqn seed={s:3d}  "
                       f"cum_idle={summary['cum_idle']:8.0f}  "
                       f"sw={summary['switches']:3d}  "
                       f"({wall_time.time()-t0:.1f}s)", flush=True)
