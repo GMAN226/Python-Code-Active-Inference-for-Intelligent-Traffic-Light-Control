@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# SUMO writes these on every run; recreated as side-effects of any sim
+output_loops.xml
+output_queues.xml
+output_tripinfo.xml
+
+# latex stray output from pdflatex invocations against missing root dirs
+texput.log

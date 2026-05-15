@@ -1,0 +1,720 @@
+Scenario 2: weather=False accident=False occlusion=True
+
+=== S2 Rule-Based: 100 seeds ===
+ Retrying in 1 seconds
+  S2 rb  seed=  1  cum_idle=   14214  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed=  2  cum_idle=   14635  sw=135  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed=  3  cum_idle=   14569  sw=133  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed=  4  cum_idle=   14521  sw=132  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed=  5  cum_idle=   15303  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed=  6  cum_idle=   15187  sw=133  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed=  7  cum_idle=   15600  sw=129  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed=  8  cum_idle=   14798  sw=131  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed=  9  cum_idle=   14351  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 10  cum_idle=   15339  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 11  cum_idle=   14821  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 12  cum_idle=   13846  sw=137  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 13  cum_idle=   14049  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 14  cum_idle=   15186  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 15  cum_idle=   14468  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 16  cum_idle=   13024  sw=137  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 17  cum_idle=   15373  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 18  cum_idle=   14334  sw=139  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 19  cum_idle=   14615  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 20  cum_idle=   14805  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 21  cum_idle=   13134  sw=139  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 22  cum_idle=   13909  sw=137  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 23  cum_idle=   15027  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 24  cum_idle=   13456  sw=136  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 25  cum_idle=   14245  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 26  cum_idle=   13819  sw=131  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 27  cum_idle=   14235  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 28  cum_idle=   13171  sw=137  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 29  cum_idle=   14440  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 30  cum_idle=   14132  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 31  cum_idle=   15513  sw=129  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 32  cum_idle=   14691  sw=131  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 33  cum_idle=   14458  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 34  cum_idle=   14596  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 35  cum_idle=   13709  sw=133  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 36  cum_idle=   15138  sw=131  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 37  cum_idle=   14560  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 38  cum_idle=   14034  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 39  cum_idle=   13839  sw=137  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 40  cum_idle=   14117  sw=135  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 41  cum_idle=   14558  sw=133  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 42  cum_idle=   14682  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 43  cum_idle=   13186  sw=139  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 44  cum_idle=   13914  sw=137  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 45  cum_idle=   15916  sw=131  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 46  cum_idle=   15247  sw=135  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 47  cum_idle=   13987  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 48  cum_idle=   15082  sw=133  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 49  cum_idle=   13797  sw=137  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 50  cum_idle=   14405  sw=131  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 51  cum_idle=   14217  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 52  cum_idle=   13985  sw=137  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 53  cum_idle=   14228  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 54  cum_idle=   14122  sw=135  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed= 55  cum_idle=   13854  sw=139  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 56  cum_idle=   14368  sw=129  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 57  cum_idle=   14238  sw=135  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 58  cum_idle=   13835  sw=135  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed= 59  cum_idle=   14613  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 60  cum_idle=   14657  sw=131  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 61  cum_idle=   15008  sw=131  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 62  cum_idle=   15157  sw=133  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed= 63  cum_idle=   17555  sw=123  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed= 64  cum_idle=   14487  sw=135  (2.9s)
+ Retrying in 1 seconds
+  S2 rb  seed= 65  cum_idle=   14427  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 66  cum_idle=   14095  sw=137  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 67  cum_idle=   15004  sw=133  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 68  cum_idle=   12607  sw=139  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 69  cum_idle=   14357  sw=133  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 70  cum_idle=   14243  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 71  cum_idle=   14270  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 72  cum_idle=   14908  sw=135  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 73  cum_idle=   13677  sw=137  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed= 74  cum_idle=   14379  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 75  cum_idle=   13790  sw=137  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 76  cum_idle=   15487  sw=131  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 77  cum_idle=   13859  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 78  cum_idle=   14720  sw=137  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 79  cum_idle=   13614  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 80  cum_idle=   15075  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 81  cum_idle=   14155  sw=135  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 82  cum_idle=   16073  sw=131  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 83  cum_idle=   13861  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 84  cum_idle=   14302  sw=133  (2.6s)
+ Retrying in 1 seconds
+  S2 rb  seed= 85  cum_idle=   14045  sw=135  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 86  cum_idle=   14837  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 87  cum_idle=   13903  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 88  cum_idle=   12960  sw=139  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 89  cum_idle=   13579  sw=137  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 90  cum_idle=   13460  sw=139  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 91  cum_idle=   12871  sw=139  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 92  cum_idle=   14353  sw=135  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 93  cum_idle=   14959  sw=133  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 94  cum_idle=   13975  sw=131  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 95  cum_idle=   13934  sw=135  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 96  cum_idle=   14927  sw=133  (2.5s)
+ Retrying in 1 seconds
+  S2 rb  seed= 97  cum_idle=   15270  sw=133  (2.4s)
+ Retrying in 1 seconds
+  S2 rb  seed= 98  cum_idle=   14136  sw=137  (2.8s)
+ Retrying in 1 seconds
+  S2 rb  seed= 99  cum_idle=   14741  sw=133  (2.7s)
+ Retrying in 1 seconds
+  S2 rb  seed=100  cum_idle=   14755  sw=133  (2.7s)
+
+=== S2 Active Inference: 100 seeds ===
+ Retrying in 1 seconds
+  S2 ai  seed=  1  cum_idle=   11808  sw=230  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed=  2  cum_idle=   11350  sw=220  (3.0s)
+ Retrying in 1 seconds
+  S2 ai  seed=  3  cum_idle=    8125  sw=253  (3.0s)
+ Retrying in 1 seconds
+  S2 ai  seed=  4  cum_idle=   10105  sw=232  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed=  5  cum_idle=    9046  sw=238  (3.0s)
+ Retrying in 1 seconds
+  S2 ai  seed=  6  cum_idle=   10571  sw=221  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed=  7  cum_idle=    8717  sw=248  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed=  8  cum_idle=   11196  sw=224  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed=  9  cum_idle=    8838  sw=220  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 10  cum_idle=    9932  sw=235  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 11  cum_idle=    9996  sw=235  (3.0s)
+ Retrying in 1 seconds
+  S2 ai  seed= 12  cum_idle=   11244  sw=225  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 13  cum_idle=    9790  sw=226  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 14  cum_idle=   10813  sw=235  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 15  cum_idle=   11096  sw=232  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 16  cum_idle=   10144  sw=229  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 17  cum_idle=    9233  sw=230  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 18  cum_idle=   11017  sw=235  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 19  cum_idle=   10408  sw=235  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 20  cum_idle=    9728  sw=230  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 21  cum_idle=    9246  sw=244  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 22  cum_idle=   10684  sw=230  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 23  cum_idle=    8791  sw=229  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 24  cum_idle=    7983  sw=235  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 25  cum_idle=   11679  sw=217  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 26  cum_idle=   12413  sw=204  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 27  cum_idle=    9084  sw=244  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 28  cum_idle=   11209  sw=224  (3.0s)
+ Retrying in 1 seconds
+  S2 ai  seed= 29  cum_idle=    9428  sw=241  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 30  cum_idle=   11710  sw=221  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 31  cum_idle=    9972  sw=239  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 32  cum_idle=   10501  sw=232  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 33  cum_idle=    9563  sw=232  (2.6s)
+ Retrying in 1 seconds
+  S2 ai  seed= 34  cum_idle=    9997  sw=244  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 35  cum_idle=   10800  sw=227  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 36  cum_idle=    7670  sw=253  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 37  cum_idle=    9521  sw=240  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 38  cum_idle=    9721  sw=227  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 39  cum_idle=   10114  sw=225  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 40  cum_idle=   10964  sw=225  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 41  cum_idle=   10900  sw=232  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 42  cum_idle=    9354  sw=228  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 43  cum_idle=   12685  sw=220  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 44  cum_idle=   11045  sw=236  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 45  cum_idle=   10178  sw=221  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 46  cum_idle=    9537  sw=231  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 47  cum_idle=    9086  sw=237  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 48  cum_idle=   11155  sw=229  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 49  cum_idle=    8912  sw=236  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 50  cum_idle=    8966  sw=237  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 51  cum_idle=   11405  sw=237  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 52  cum_idle=    9847  sw=240  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 53  cum_idle=   10127  sw=243  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 54  cum_idle=    9386  sw=237  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 55  cum_idle=   10744  sw=225  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 56  cum_idle=   10860  sw=233  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 57  cum_idle=   10255  sw=223  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 58  cum_idle=    8167  sw=245  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 59  cum_idle=   10857  sw=213  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 60  cum_idle=    9194  sw=234  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 61  cum_idle=    9803  sw=221  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 62  cum_idle=    9528  sw=237  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 63  cum_idle=   10650  sw=235  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 64  cum_idle=    8329  sw=240  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 65  cum_idle=   10720  sw=229  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 66  cum_idle=    9952  sw=230  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 67  cum_idle=    8002  sw=260  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 68  cum_idle=    9869  sw=241  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 69  cum_idle=   11807  sw=232  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 70  cum_idle=    9938  sw=239  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 71  cum_idle=   10326  sw=241  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 72  cum_idle=   10836  sw=239  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 73  cum_idle=   10646  sw=226  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 74  cum_idle=   11679  sw=225  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 75  cum_idle=   10304  sw=235  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 76  cum_idle=   10393  sw=217  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 77  cum_idle=    9941  sw=233  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 78  cum_idle=    9624  sw=228  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 79  cum_idle=    9793  sw=238  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 80  cum_idle=    9843  sw=232  (2.6s)
+ Retrying in 1 seconds
+  S2 ai  seed= 81  cum_idle=   10253  sw=235  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 82  cum_idle=   10079  sw=228  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 83  cum_idle=    9490  sw=234  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 84  cum_idle=   10224  sw=233  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 85  cum_idle=   10033  sw=238  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 86  cum_idle=    9368  sw=242  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 87  cum_idle=   10446  sw=221  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 88  cum_idle=   10328  sw=222  (2.7s)
+ Retrying in 1 seconds
+  S2 ai  seed= 89  cum_idle=    9501  sw=236  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 90  cum_idle=   10927  sw=226  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 91  cum_idle=    8953  sw=239  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 92  cum_idle=   10371  sw=233  (2.8s)
+ Retrying in 1 seconds
+  S2 ai  seed= 93  cum_idle=    9704  sw=230  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 94  cum_idle=    9217  sw=245  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 95  cum_idle=   12684  sw=214  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 96  cum_idle=   11423  sw=234  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 97  cum_idle=   19080  sw=233  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 98  cum_idle=    8993  sw=229  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed= 99  cum_idle=   11406  sw=231  (2.9s)
+ Retrying in 1 seconds
+  S2 ai  seed=100  cum_idle=    8908  sw=232  (2.8s)
+
+=== S2 DQN: train 100 ep, eval 100 seeds ===
+ Retrying in 1 seconds
+  train ep 1/100  cum_idle=79713  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 10/100  cum_idle=15181  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 20/100  cum_idle=11235  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 30/100  cum_idle=11522  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 40/100  cum_idle=12252  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 50/100  cum_idle=10928  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 60/100  cum_idle=10020  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 70/100  cum_idle=10821  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 80/100  cum_idle=10290  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 90/100  cum_idle=10509  eps=0.010
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+ Retrying in 1 seconds
+  train ep 100/100  cum_idle=11213  eps=0.010
+ Retrying in 1 seconds
+  S2 dqn seed=  1  cum_idle=   11639  sw=202  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  2  cum_idle=   12713  sw=184  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  3  cum_idle=   11117  sw=204  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed=  4  cum_idle=   10418  sw=196  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  5  cum_idle=   11279  sw=194  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  6  cum_idle=   11129  sw=198  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  7  cum_idle=   12584  sw=194  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed=  8  cum_idle=   11417  sw=196  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed=  9  cum_idle=   12167  sw=192  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 10  cum_idle=   11119  sw=200  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 11  cum_idle=   12807  sw=190  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 12  cum_idle=   12143  sw=194  (3.3s)
+ Retrying in 1 seconds
+  S2 dqn seed= 13  cum_idle=   11267  sw=194  (3.4s)
+ Retrying in 1 seconds
+  S2 dqn seed= 14  cum_idle=   11232  sw=194  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 15  cum_idle=   11345  sw=200  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 16  cum_idle=   10161  sw=204  (3.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 17  cum_idle=   10897  sw=198  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 18  cum_idle=   12301  sw=190  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 19  cum_idle=   11003  sw=192  (3.1s)
+ Retrying in 1 seconds
+  S2 dqn seed= 20  cum_idle=   11097  sw=196  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 21  cum_idle=   11428  sw=202  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 22  cum_idle=   12020  sw=190  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 23  cum_idle=   11154  sw=200  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 24  cum_idle=   10732  sw=202  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 25  cum_idle=    9403  sw=206  (3.1s)
+ Retrying in 1 seconds
+  S2 dqn seed= 26  cum_idle=   11965  sw=186  (3.1s)
+ Retrying in 1 seconds
+  S2 dqn seed= 27  cum_idle=   11325  sw=200  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 28  cum_idle=   11536  sw=194  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 29  cum_idle=   12024  sw=190  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 30  cum_idle=   11116  sw=192  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 31  cum_idle=    9532  sw=208  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 32  cum_idle=   10769  sw=194  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 33  cum_idle=    9506  sw=212  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 34  cum_idle=   10128  sw=198  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 35  cum_idle=    9293  sw=210  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 36  cum_idle=   10895  sw=198  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 37  cum_idle=   11742  sw=198  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 38  cum_idle=   11644  sw=192  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 39  cum_idle=   10224  sw=204  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 40  cum_idle=   11301  sw=190  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 41  cum_idle=   11039  sw=200  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 42  cum_idle=   10913  sw=194  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 43  cum_idle=   10040  sw=198  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 44  cum_idle=   11013  sw=198  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 45  cum_idle=   10641  sw=196  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 46  cum_idle=    9929  sw=204  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 47  cum_idle=   10815  sw=200  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 48  cum_idle=   10514  sw=198  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 49  cum_idle=   10030  sw=210  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 50  cum_idle=   10530  sw=196  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 51  cum_idle=   10803  sw=198  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 52  cum_idle=   10384  sw=200  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 53  cum_idle=   10939  sw=198  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 54  cum_idle=   10796  sw=198  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 55  cum_idle=   11988  sw=188  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 56  cum_idle=   11360  sw=196  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 57  cum_idle=   10123  sw=210  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 58  cum_idle=   10045  sw=198  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 59  cum_idle=   11191  sw=194  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 60  cum_idle=   12173  sw=196  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 61  cum_idle=   11040  sw=194  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 62  cum_idle=   10461  sw=200  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 63  cum_idle=   10364  sw=206  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 64  cum_idle=   11183  sw=202  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 65  cum_idle=   11512  sw=192  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 66  cum_idle=   10447  sw=200  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 67  cum_idle=   11953  sw=196  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 68  cum_idle=   10645  sw=210  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 69  cum_idle=   10010  sw=200  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 70  cum_idle=   11915  sw=186  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 71  cum_idle=   10526  sw=196  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 72  cum_idle=    9787  sw=198  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 73  cum_idle=   11061  sw=196  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 74  cum_idle=   12229  sw=192  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 75  cum_idle=   10707  sw=194  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 76  cum_idle=   10797  sw=196  (2.5s)
+ Retrying in 1 seconds
+  S2 dqn seed= 77  cum_idle=   10815  sw=194  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 78  cum_idle=    9966  sw=204  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 79  cum_idle=   10412  sw=202  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 80  cum_idle=   10382  sw=198  (3.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 81  cum_idle=   10378  sw=202  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 82  cum_idle=   11024  sw=200  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 83  cum_idle=   10189  sw=200  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 84  cum_idle=   11472  sw=198  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 85  cum_idle=   11175  sw=202  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 86  cum_idle=   10156  sw=202  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 87  cum_idle=   11081  sw=206  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 88  cum_idle=   12494  sw=188  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 89  cum_idle=   10794  sw=192  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 90  cum_idle=   11607  sw=198  (2.7s)
+ Retrying in 1 seconds
+  S2 dqn seed= 91  cum_idle=   10525  sw=200  (2.6s)
+ Retrying in 1 seconds
+  S2 dqn seed= 92  cum_idle=   10675  sw=196  (2.8s)
+ Retrying in 1 seconds
+  S2 dqn seed= 93  cum_idle=   12233  sw=188  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 94  cum_idle=   10978  sw=198  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 95  cum_idle=   11361  sw=196  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 96  cum_idle=   10996  sw=190  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 97  cum_idle=   11124  sw=196  (3.0s)
+ Retrying in 1 seconds
+  S2 dqn seed= 98  cum_idle=   10094  sw=200  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed= 99  cum_idle=    9290  sw=214  (2.9s)
+ Retrying in 1 seconds
+  S2 dqn seed=100  cum_idle=   10033  sw=204  (2.8s)
+
+Wrote /Users/edwin/Downloads/WF_IoT_AIF_for_TSC/results/traces_s2.csv and /Users/edwin/Downloads/WF_IoT_AIF_for_TSC/results/summary_s2.csv (total elapsed: 18.9 min)
